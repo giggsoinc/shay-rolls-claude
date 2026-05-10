@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body { font-family: -apple-system, sans-serif; max-width: 600px; margin: 40px auto; color: #1a2a3a; }
+  .header { background: #0a1a2a; color: white; padding: 24px; border-radius: 8px 8px 0 0; }
+  .header h1 { margin: 0; font-size: 18px; }
+  .header p { margin: 4px 0 0; opacity: 0.7; font-size: 13px; }
+  .body { border: 1px solid #dde8f4; border-top: 0; padding: 24px; border-radius: 0 0 8px 8px; }
+  .field { margin-bottom: 16px; }
+  .label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #8aa0b8; }
+  .value { font-size: 14px; margin-top: 4px; font-family: monospace; background: #f5f8ff; padding: 8px 12px; border-radius: 4px; }
+  .actions { display: flex; gap: 12px; margin-top: 28px; }
+  .btn { padding: 12px 24px; border-radius: 6px; font-weight: 700; font-size: 14px; text-decoration: none; text-align: center; }
+  .approve { background: #1b5e20; color: white; }
+  .reject { background: #b71c1c; color: white; }
+  .warning { background: #fff8e1; border: 1px solid #ffe082; border-radius: 6px; padding: 12px; margin-top: 20px; font-size: 13px; }
+  .footer { margin-top: 24px; font-size: 11px; color: #8aa0b8; border-top: 1px solid #e8eef4; padding-top: 16px; }
+  .token-note { font-size: 11px; color: #8aa0b8; margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Shay-Rolls Approval Request</h1>
+  <p>{{SEVERITY}} · {{PROJECT}} · {{TIMESTAMP}}</p>
+</div>
+
+<div class="body">
+
+  <div class="field">
+    <div class="label">Request Type</div>
+    <div class="value">{{REQUEST_TYPE}}</div>
+  </div>
+
+  <div class="field">
+    <div class="label">Requested By</div>
+    <div class="value">{{DEVELOPER_EMAIL}}</div>
+  </div>
+
+  <div class="field">
+    <div class="label">Project</div>
+    <div class="value">{{PROJECT}}</div>
+  </div>
+
+  <div class="field">
+    <div class="label">Details</div>
+    <div class="value">{{DETAILS}}</div>
+  </div>
+
+  <div class="field">
+    <div class="label">CVE Status</div>
+    <div class="value">{{CVE_STATUS}}</div>
+  </div>
+
+  <div class="field">
+    <div class="label">Git Branch</div>
+    <div class="value">{{GIT_BRANCH}}</div>
+  </div>
+
+  <div class="warning">
+    ⚠️ This link is single-use and expires in <strong>{{EXPIRY}}</strong>.
+    Only the first click counts. Verify you are the intended approver before clicking.
+  </div>
+
+  <div class="actions">
+    <a class="btn approve" href="{{APPROVE_URL}}">✅ Approve</a>
+    <a class="btn reject" href="{{REJECT_URL}}">❌ Reject</a>
+  </div>
+
+  <div class="token-note">
+    Token: {{TOKEN}} · Expires: {{EXPIRY_TIMESTAMP}}<br>
+    If you did not expect this request, contact {{ESCALATION_EMAIL}} immediately.
+  </div>
+
+</div>
+
+<div class="footer">
+  Shay-Rolls Core · github.com/giggso/shay-rolls-claude · MIT License<br>
+  This email was sent by Shay-Rolls running in project {{PROJECT}} on behalf of {{DEVELOPER_EMAIL}}.
+</div>
+
+</body>
+</html>

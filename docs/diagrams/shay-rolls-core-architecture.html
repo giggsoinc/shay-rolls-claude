@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@700;800&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:#fff;font-family:'JetBrains Mono',monospace;padding:32px;color:#1a2a3a;}
+  h1{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;letter-spacing:3px;text-transform:uppercase;margin-bottom:4px;}
+  .sub{font-size:9px;letter-spacing:3px;color:#8aa0b8;text-transform:uppercase;margin-bottom:32px;}
+  h2{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin:32px 0 16px;color:#0a1a2a;border-bottom:2px solid #e8eef4;padding-bottom:8px;}
+
+  /* LAYER SECTIONS */
+  .layer{border:1.5px solid #dde8f4;border-radius:10px;padding:20px;margin-bottom:16px;}
+  .layer-hdr{font-size:8px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;padding:4px 10px;border-radius:4px;display:inline-block;}
+  .l-dev{background:#e8f4ff;color:#1565c0;border-color:#bbdefb;}
+  .l-skill{background:#f3e5f5;color:#6a1b9a;border-color:#ce93d8;}
+  .l-agent{background:#e8fff4;color:#1b5e20;border-color:#c8e6c9;}
+  .l-hook{background:#fff8e1;color:#f57f17;border-color:#ffe082;}
+  .l-infra{background:#fff0f0;color:#b71c1c;border-color:#ffcdd2;}
+  .l-notify{background:#fce4ec;color:#880e4f;border-color:#f48fb1;}
+
+  /* CARDS */
+  .grid{display:flex;flex-wrap:wrap;gap:10px;}
+  .card{background:#f8fbff;border:1.5px solid #dde8f4;border-radius:8px;padding:10px 12px;min-width:140px;flex:1;}
+  .card-title{font-size:10px;font-weight:700;color:#0a1a2a;margin-bottom:4px;}
+  .card-sub{font-size:8px;color:#5a7a9a;line-height:1.5;}
+  .tag{font-size:7px;font-weight:700;padding:2px 6px;border-radius:3px;text-transform:uppercase;letter-spacing:1px;display:inline-block;margin-top:4px;}
+  .t-block{background:#fff0f0;color:#b71c1c;border:1px solid #ffcdd2;}
+  .t-warn{background:#fff8e1;color:#f57f17;border:1px solid #ffe082;}
+  .t-flow{background:#e8f4ff;color:#1565c0;border:1px solid #bbdefb;}
+  .t-auto{background:#e8fff4;color:#1b5e20;border:1px solid #c8e6c9;}
+
+  /* FLOW ARROW */
+  .flow-arrow{text-align:center;font-size:13px;color:#90caf9;margin:8px 0;letter-spacing:2px;}
+
+  /* ENFORCEMENT FLOW */
+  .eline{display:flex;align-items:center;gap:0;overflow-x:auto;margin-bottom:8px;}
+  .ebox{padding:8px 14px;border-radius:6px;font-size:9px;font-weight:700;text-align:center;white-space:nowrap;}
+  .ebox-dev{background:#e8f4ff;color:#1565c0;border:1.5px solid #bbdefb;}
+  .ebox-claude{background:#f3e5f5;color:#6a1b9a;border:1.5px solid #ce93d8;}
+  .ebox-hook{background:#fff8e1;color:#f57f17;border:1.5px solid #ffe082;}
+  .ebox-pass{background:#e8fff4;color:#1b5e20;border:1.5px solid #c8e6c9;}
+  .ebox-block{background:#fff0f0;color:#b71c1c;border:1.5px solid #ffcdd2;}
+  .earrow{font-size:16px;color:#90caf9;padding:0 6px;}
+</style>
+</head>
+<body>
+
+<h1>Shay-Rolls Claude Core</h1>
+<div class="sub">Architecture Diagram · v2.6 · github.com/giggso/shay-rolls-claude</div>
+
+<!-- ENFORCEMENT FLOW -->
+<h2>Enforcement Flow</h2>
+<div class="eline">
+  <div class="ebox ebox-dev">Dev writes code</div>
+  <div class="earrow">→</div>
+  <div class="ebox ebox-claude">Skills advise</div>
+  <div class="earrow">→</div>
+  <div class="ebox ebox-claude">Agents validate</div>
+  <div class="earrow">→</div>
+  <div class="ebox ebox-hook">git commit</div>
+  <div class="earrow">→</div>
+  <div class="ebox ebox-hook">pre-commit hook</div>
+  <div class="earrow">→</div>
+  <div class="ebox ebox-pass">✅ CLEARED</div>
+  <div class="earrow" style="color:#ffcdd2">|</div>
+  <div class="ebox ebox-block">❌ BLOCKED</div>
+</div>
+<div class="eline">
+  <div class="ebox ebox-dev">git push</div>
+  <div class="earrow">→</div>
+  <div class="ebox ebox-hook">pre-receive (server)</div>
+  <div class="earrow">→</div>
+  <div class="ebox ebox-hook">CI/CD (GitHub Actions)</div>
+  <div class="earrow">→</div>
+  <div class="ebox ebox-pass">✅ merged</div>
+  <div class="earrow" style="color:#ffcdd2">|</div>
+  <div class="ebox ebox-block">❌ rejected</div>
+</div>
+
+<!-- DEV TOOLS -->
+<h2>Layer 1 — Developer Tools</h2>
+<div class="layer" style="border-color:#bbdefb;">
+  <div class="layer-hdr l-dev">Developer Machine</div>
+  <div class="grid">
+    <div class="card"><div class="card-title">VS Code / Cursor</div><div class="card-sub">Primary IDE<br/>Claude Code integrated</div></div>
+    <div class="card"><div class="card-title">Claude Code</div><div class="card-sub">Agentic coding layer<br/>Reads CLAUDE.md on open</div></div>
+    <div class="card"><div class="card-title">CLAUDE.md</div><div class="card-sub">Project entry point<br/>Non-negotiable rules<br/>Boot sequence</div></div>
+    <div class="card"><div class="card-title">manifest.json</div><div class="card-sub">Stack declaration<br/>Guard config · Style rules<br/>Changelog · Approved skills</div><div class="tag t-auto">git tracked</div></div>
+    <div class="card"><div class="card-title">manifest.secrets.json</div><div class="card-sub">Approvers · Inbox<br/>API keys · Webhooks</div><div class="tag t-block">never committed</div><div class="tag t-block" style="margin-left:4px;">chmod 600</div></div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<h2>Layer 2 — Skills (Progressive Disclosure)</h2>
+<div class="layer" style="border-color:#ce93d8;">
+  <div class="layer-hdr l-skill">~100 tokens at startup · Full rules load only when triggered</div>
+  <div class="grid">
+    <div class="card"><div class="card-title">shay-rolls-core</div><div class="card-sub">Entry point · Reads live manifest<br/>Routes to rule files on demand</div><div class="tag t-auto">always active</div></div>
+    <div class="card"><div class="card-title">shay-expert</div><div class="card-sub">L99 mode · No hedging<br/>World-class specialist depth</div></div>
+    <div class="card"><div class="card-title">shay-plan</div><div class="card-sub">Architecture-first planning<br/>Dependency map before code</div></div>
+    <div class="card"><div class="card-title">shay-review</div><div class="card-sub">Manifest-aware code review<br/>Stack + style + security</div></div>
+    <div class="card"><div class="card-title">shay-security</div><div class="card-sub">CVE-aware security review<br/>Pre-merge vulnerability scan</div></div>
+    <div class="card"><div class="card-title">shay-refactor</div><div class="card-sub">Style enforcement + simplify<br/>150 lines · type hints · logging</div></div>
+    <div class="card"><div class="card-title">shay-test</div><div class="card-sub">Test-first discipline<br/>pytest · edge cases · mocks</div></div>
+    <div class="card"><div class="card-title">shay-document</div><div class="card-sub">Docstrings · architecture.md<br/>Changelog · README</div></div>
+    <div class="card"><div class="card-title">andie</div><div class="card-sub">Work orchestrator · Drama Mode<br/>OODA · Diagrams · Strategy</div><div class="tag t-auto">cross-domain</div></div>
+  </div>
+</div>
+
+<!-- AGENTS -->
+<h2>Layer 3 — Agents (Autonomous Validators)</h2>
+<div class="layer" style="border-color:#c8e6c9;">
+  <div class="layer-hdr l-agent">Spawned by Claude · Each gets own context window</div>
+  <div class="grid">
+    <div class="card"><div class="card-title">manifest-checker</div><div class="card-sub">Priority 1 · Always first<br/>Hard stop if manifest missing</div><div class="tag t-block">hard block</div></div>
+    <div class="card"><div class="card-title">stack-validator</div><div class="card-sub">Priority 2 · On import detect<br/>Three-tier CVE + approval flow</div><div class="tag t-flow">approval flow</div></div>
+    <div class="card"><div class="card-title">style-enforcer</div><div class="card-sub">Priority 3 · PostEdit<br/>Advise during coding · block at commit</div><div class="tag t-warn">warn → block</div></div>
+    <div class="card"><div class="card-title">architecture-guard</div><div class="card-sub">Priority 4 · New file create<br/>24hr grace · then hard block</div><div class="tag t-warn">24h grace</div></div>
+    <div class="card"><div class="card-title">claude-mem</div><div class="card-sub">Session start + end<br/>Indexes decisions · 95% token reduction</div><div class="tag t-auto">haiku model</div></div>
+    <div class="card"><div class="card-title">skill-guard</div><div class="card-sub">Monitors skill activity<br/>Blocks restricted file access<br/>Checks approved_skills list</div><div class="tag t-block">security</div></div>
+  </div>
+</div>
+
+<!-- HOOKS -->
+<h2>Layer 4 — Hooks (Event Triggers)</h2>
+<div class="layer" style="border-color:#ffe082;">
+  <div class="layer-hdr l-hook">Fire automatically · Developer cannot bypass pre-receive</div>
+  <div class="grid">
+    <div class="card"><div class="card-title">PreToolUse</div><div class="card-sub">Before ANY Claude action<br/>Manifest check · hard stop if missing</div><div class="tag t-block">always first</div></div>
+    <div class="card"><div class="card-title">PostEdit</div><div class="card-sub">After every file save<br/>Triggers style + stack agents</div></div>
+    <div class="card"><div class="card-title">pre-commit (local)</div><div class="card-sub">git commit gate<br/>5 checks · manifest · secrets · CVE · style · deletions</div><div class="tag t-block">hard block</div></div>
+    <div class="card"><div class="card-title">pre-receive (server)</div><div class="card-sub">Every git push — server side<br/>Cannot bypass with --no-verify</div><div class="tag t-block">unforgeable</div></div>
+    <div class="card"><div class="card-title">GitHub Actions CI</div><div class="card-sub">Every push + PR<br/>Manifest · secrets · CVE · tamper check</div><div class="tag t-block">server-side</div></div>
+  </div>
+</div>
+
+<!-- SCRIPTS -->
+<h2>Layer 5 — Scripts</h2>
+<div class="layer" style="border-color:#ffcdd2;">
+  <div class="layer-hdr l-infra">Python scripts · Called by hooks and agents</div>
+  <div class="grid">
+    <div class="card"><div class="card-title">cve-check.py</div><div class="card-sub">Three-tier library check<br/>Tier 1: org whitelist → auto-approve<br/>Tier 2: category → auto-approve<br/>Tier 3: PyPI Safety + GPT-5.4-Cyber</div></div>
+    <div class="card"><div class="card-title">secret-scan.py</div><div class="card-sub">Regex pattern scan on staged files<br/>AWS keys · OpenAI keys · passwords<br/>SSH keys · Bearer tokens</div><div class="tag t-block">hard block</div></div>
+    <div class="card"><div class="card-title">skill-search.py</div><div class="card-sub">Search + audit + install skills<br/>anthropics/skills + GitHub<br/>Security audit before install<br/>Approval required</div></div>
+    <div class="card"><div class="card-title">setup-claudemem.sh</div><div class="card-sub">Installs Claude Mem<br/>Updates CLAUDE.md<br/>Local session indexing</div></div>
+  </div>
+</div>
+
+<!-- COMMANDS -->
+<h2>Layer 6 — Commands (User-invoked)</h2>
+<div class="layer" style="border-color:#f48fb1;">
+  <div class="layer-hdr l-notify">Slash commands · Run explicitly</div>
+  <div class="grid">
+    <div class="card"><div class="card-title">/shay-scaffold</div><div class="card-sub">Plan before code<br/>Dependency map + file structure</div></div>
+    <div class="card"><div class="card-title">/shay-approve</div><div class="card-sub">Architect approves library<br/>Updates manifest + changelog</div></div>
+    <div class="card"><div class="card-title">/shay-debug</div><div class="card-sub">Full boot diagnostic<br/>All layers checked + cleared</div></div>
+    <div class="card"><div class="card-title">/shay-incident</div><div class="card-sub">Manual P1/P2/P3 incident<br/>Notifies Prism7</div></div>
+    <div class="card"><div class="card-title">/shay-search</div><div class="card-sub">Find + audit + install skills<br/>Security check before install</div></div>
+    <div class="card"><div class="card-title">/andie drama</div><div class="card-sub">Expert debate mode<br/>OODA + diagrams + strategy docs</div></div>
+  </div>
+</div>
+
+<!-- NOTIFICATION -->
+<h2>Layer 7 — Notifications + Audit</h2>
+<div class="layer" style="border-color:#f48fb1;">
+  <div class="layer-hdr l-notify">Every event logged · Full audit trail in Git</div>
+  <div class="grid">
+    <div class="card"><div class="card-title">Prism7 Shared Inbox</div><div class="card-sub">Library approvals · rejections<br/>Violations · token warnings<br/>Guard alerts · escalations</div></div>
+    <div class="card"><div class="card-title">Approval Flow</div><div class="card-sub">Email → single-use token link<br/>First responder approves<br/>Auto-PR merge → manifest update</div></div>
+    <div class="card"><div class="card-title">Audit Trail</div><div class="card-sub">Every approval in Git history<br/>Timestamp · actor · PR link<br/>Changelog in manifest.json</div></div>
+    <div class="card"><div class="card-title">AWS SNS / GCP Pub/Sub</div><div class="card-sub">Email + SMS delivery<br/>P1 → immediate page<br/>P2/P3 → digest</div></div>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div style="display:flex;gap:12px;margin-top:24px;padding-top:16px;border-top:2px solid #e8eef4;flex-wrap:wrap;align-items:center;">
+  <span style="font-size:8px;color:#8aa0b8;letter-spacing:2px;text-transform:uppercase;font-weight:700;">Legend:</span>
+  <span class="tag t-block">Hard block</span>
+  <span class="tag t-warn">Warn → block at commit</span>
+  <span class="tag t-flow">Approval flow</span>
+  <span class="tag t-auto">Auto / always active</span>
+  <span style="font-size:8px;color:#8aa0b8;margin-left:8px;">MIT License · github.com/giggso/shay-rolls-claude</span>
+</div>
+
+</body>
+</html>

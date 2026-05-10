@@ -1,0 +1,169 @@
+{
+  "$schema": "./manifest.schema.json",
+  "_layer": "org",
+  "_locked": [
+    "standards",
+    "approval_mode",
+    "approval_mode_changeable",
+    "guard.enabled",
+    "guard.firewall.open_world",
+    "guard.db.truncation",
+    "guard.db.schema_drop",
+    "style",
+    "tokens.control",
+    "tokens.warnings",
+    "offline"
+  ],
+  "project": "GIGGSO-ORG",
+  "version": "1.0",
+  "stack": {
+    "language": [
+      "python3.12",
+      "typescript",
+      "javascript",
+      "sql",
+      "plsql",
+      "shell"
+    ],
+    "frontend": [
+      "vuejs",
+      "reactjs"
+    ],
+    "data": [
+      "polars",
+      "s3"
+    ],
+    "db": [
+      "postgresql",
+      "opensearch",
+      "falkordb"
+    ],
+    "infra": [
+      "terraform",
+      "docker-compose",
+      "kubernetes"
+    ],
+    "cloud": "multi",
+    "libraries": []
+  },
+  "standards": "shay-rolls-v1",
+  "min_compatible_version": "1.0",
+  "approval_mode": "first_responder",
+  "approval_mode_version": "1.0",
+  "approval_mode_changeable": true,
+  "tokens": {
+    "model": "claude-code-enterprise",
+    "control": "per_developer",
+    "warnings": [
+      25,
+      50,
+      75,
+      80,
+      90,
+      95
+    ],
+    "overflow_sla": {
+      "standard_hours": 4,
+      "urgent_hours": 1,
+      "critical_minutes": 15
+    }
+  },
+  "guard": {
+    "enabled": true,
+    "version": "1.0",
+    "git": {
+      "force_push": "hard_block",
+      "branch_deletion": "approval_flow",
+      "file_deletion": "approval_flow",
+      "deletion_flag": "GUARD:ALLOW-DELETE"
+    },
+    "db": {
+      "mass_deletion_threshold": 100,
+      "truncation": "hard_block",
+      "schema_drop": "hard_block",
+      "index_deletion": "approval_flow"
+    },
+    "infra": {
+      "s3_delete": "approval_flow",
+      "terraform_state": "hard_block",
+      "vm_terminate": "approval_flow",
+      "network_change": "approval_flow"
+    },
+    "firewall": {
+      "open_world": "hard_block",
+      "rule_change": "approval_flow",
+      "egress_change": "approval_flow"
+    },
+    "incidents": {
+      "p1_sla_minutes": 15,
+      "p2_sla_minutes": 60,
+      "p3_sla_hours": 24
+    }
+  },
+  "offline": {
+    "cache_ttl_hours": 24,
+    "allow_commits_offline": false
+  },
+  "style": {
+    "max_lines_per_file": 150,
+    "require_type_hints": true,
+    "require_docstrings": true,
+    "require_logging": true,
+    "forbid_print_statements": true,
+    "max_function_lines": 50,
+    "require_base_classes": true
+  },
+  "architecture": {
+    "require_diagram": true,
+    "require_versioning": true,
+    "diagram_file": ".shay-rolls/architecture.md",
+    "version_bump_on_change": true
+  },
+  "changelog": [
+    {
+      "version": "1.0",
+      "changed_by": "ravi@giggso.com",
+      "changed_at": "2026-05-08T09:00:00Z",
+      "changes": "Initial org manifest \u2014 baseline standards for all Giggso projects",
+      "pr": "github.com/giggso/shay-rolls-claude/pull/1",
+      "approved_by": "ravi@giggso.com"
+    }
+  ],
+  "approved_skills": {
+    "_note": "Org-level approved skills. Projects inherit this list.",
+    "giggso": [
+      "shay-rolls-core",
+      "shay-expert",
+      "shay-plan",
+      "shay-review",
+      "shay-security",
+      "shay-refactor",
+      "shay-test",
+      "shay-document"
+    ],
+    "anthropic": [
+      "claude-code-guide",
+      "explore",
+      "general-purpose",
+      "plan",
+      "statusline-setup",
+      "debug",
+      "batch",
+      "claude-api",
+      "simplify",
+      "review",
+      "security-review",
+      "init"
+    ],
+    "community": []
+  },
+  "audit": {
+    "_note": "Set by enterprise admin. All projects inherit this. Devs configure nothing.",
+    "provider": "s3",
+    "s3_bucket": "your-org-audit-bucket",
+    "s3_region": "us-east-1",
+    "kms_key_id": "arn:aws:kms:us-east-1:123456789:key/your-key-id",
+    "encryption_key": "set-via-vault-or-secrets-manager",
+    "local_fallback": false
+  }
+}

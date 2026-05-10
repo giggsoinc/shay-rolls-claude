@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body { font-family: -apple-system, sans-serif; max-width: 600px; margin: 40px auto; color: #1a2a3a; }
+  .header { background: #1b5e20; color: white; padding: 24px; border-radius: 8px 8px 0 0; }
+  .header h1 { margin: 0; font-size: 18px; }
+  .body { border: 1px solid #c8e6c9; border-top: 0; padding: 24px; border-radius: 0 0 8px 8px; }
+  .field { margin-bottom: 16px; }
+  .label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #8aa0b8; }
+  .value { font-size: 14px; margin-top: 4px; font-family: monospace; background: #f1f8e9; padding: 8px 12px; border-radius: 4px; }
+  .footer { margin-top: 24px; font-size: 11px; color: #8aa0b8; border-top: 1px solid #e8eef4; padding-top: 16px; }
+</style>
+</head>
+<body>
+<div class="header"><h1>✅ Approved — {{REQUEST_TYPE}}</h1></div>
+<div class="body">
+  <div class="field"><div class="label">Approved By</div><div class="value">{{APPROVER_EMAIL}}</div></div>
+  <div class="field"><div class="label">Approved At</div><div class="value">{{TIMESTAMP}}</div></div>
+  <div class="field"><div class="label">Item</div><div class="value">{{DETAILS}}</div></div>
+  <div class="field"><div class="label">PR</div><div class="value">{{PR_URL}}</div></div>
+  <p>The PR has been auto-merged. Pull latest manifest to proceed.</p>
+  <code>git pull && cat .shay-rolls/manifest.json | grep libraries</code>
+</div>
+<div class="footer">Shay-Rolls Core · Audit ID: {{AUDIT_ID}}</div>
+</body>
+</html>

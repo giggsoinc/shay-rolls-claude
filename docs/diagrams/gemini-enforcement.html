@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@700;800&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#fff; font-family:'JetBrains Mono',monospace; padding:32px; color:#1a2a3a; }
+  h1 { font-family:'Syne',sans-serif; font-size:20px; font-weight:800; letter-spacing:3px; text-transform:uppercase; margin-bottom:4px; }
+  .subtitle { font-size:10px; letter-spacing:3px; color:#8aa0b8; text-transform:uppercase; margin-bottom:40px; }
+  h2 { font-family:'Syne',sans-serif; font-size:14px; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin:40px 0 20px; color:#0a1a2a; border-bottom:2px solid #e8eef4; padding-bottom:8px; }
+
+  /* ── OODA ── */
+  .ooda { display:grid; grid-template-columns:repeat(4,1fr); gap:0; border:1.5px solid #dde8f4; border-radius:10px; overflow:hidden; }
+  .ooda-lane { padding:20px 16px; border-right:1.5px solid #dde8f4; }
+  .ooda-lane:last-child { border-right:none; }
+  .ooda-label { font-size:8px; font-weight:700; letter-spacing:3px; text-transform:uppercase; margin-bottom:12px; padding:4px 8px; border-radius:4px; display:inline-block; }
+  .l-obs { background:#e8f4ff; color:#1565c0; }
+  .l-ori { background:#fff8e1; color:#f57f17; }
+  .l-dec { background:#fce4ec; color:#880e4f; }
+  .l-act { background:#e8fff4; color:#1b5e20; }
+  .ooda-item { font-size:10px; color:#3a5a7a; line-height:1.6; margin-bottom:8px; padding-left:10px; border-left:2px solid #dde8f4; }
+  .ooda-arrow { text-align:center; font-size:18px; color:#90caf9; margin:8px 0; }
+
+  /* ── FLOWCHART ── */
+  .flow { display:flex; flex-direction:column; align-items:center; gap:0; }
+  .fbox { padding:10px 20px; border-radius:8px; font-size:10px; font-weight:700; letter-spacing:1px; text-align:center; min-width:220px; }
+  .fbox-start { background:#0a1a2a; color:#fff; border-radius:20px; }
+  .fbox-action { background:#f5f8ff; border:1.5px solid #dde8f4; color:#1a2a3a; }
+  .fbox-decision { background:#fff8e1; border:1.5px solid #ffe082; color:#f57f17; transform:rotate(0deg); clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%); padding:20px 30px; }
+  .fbox-block { background:#fff0f0; border:1.5px solid #ffcdd2; color:#b71c1c; }
+  .fbox-pass { background:#e8fff4; border:1.5px solid #c8e6c9; color:#1b5e20; }
+  .farrow { font-size:20px; color:#90caf9; margin:4px 0; }
+  .fbranch { display:flex; gap:40px; align-items:flex-start; }
+  .fbranch-label { font-size:9px; color:#8aa0b8; letter-spacing:1px; margin:2px 0; text-align:center; }
+  .fline { width:1.5px; height:20px; background:#90caf9; margin:0 auto; }
+
+  /* ── ARCH DIAGRAM ── */
+  .arch { display:grid; grid-template-columns:160px 50px 180px 50px 160px 50px 160px; align-items:center; gap:0; overflow-x:auto; }
+  .arch-col { display:flex; flex-direction:column; align-items:center; gap:10px; }
+  .arch-hdr { font-size:8px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#8aa0b8; text-align:center; margin-bottom:8px; padding-bottom:6px; border-bottom:2px solid #e8eef4; width:100%; }
+  .svc { background:#f8fbff; border:1.5px solid #dde8f4; border-radius:8px; padding:10px; width:100%; text-align:center; }
+  .svc-icon { font-size:22px; margin-bottom:4px; }
+  .svc-name { font-size:9px; font-weight:700; color:#0a1a2a; letter-spacing:0.5px; }
+  .svc-desc { font-size:7px; color:#7a9ab8; margin-top:2px; }
+  .svc-aws { border-color:#ffe0b2; background:#fff8f0; }
+  .svc-gcp { border-color:#c8e6c9; background:#f1f8e9; }
+  .svc-sr { border-color:#bbdefb; background:#e8f4ff; }
+  .svc-mdm { border-color:#e1bee7; background:#f3e5f5; }
+  .arr-col { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; padding-top:30px; }
+  .arr-label { font-size:7px; color:#b0c4d8; text-align:center; max-width:44px; line-height:1.3; }
+  .badge { font-size:7px; font-weight:700; padding:2px 6px; border-radius:3px; text-transform:uppercase; letter-spacing:1px; }
+  .badge-block { background:#fff0f0; color:#b71c1c; border:1px solid #ffcdd2; }
+  .badge-log { background:#e8fff4; color:#1b5e20; border:1px solid #c8e6c9; }
+  .badge-inject { background:#f3e5f5; color:#6a1b9a; border:1px solid #ce93d8; }
+</style>
+</head>
+<body>
+
+<h1>Enterprise Gemini Enforcement</h1>
+<div class="subtitle">Drama Mode Output · Scene 1 · 2026-05-09</div>
+
+<!-- ══ DIAGRAM 1: OODA ══ -->
+<h2>1 — OODA Loop</h2>
+<div class="ooda">
+  <div class="ooda-lane">
+    <div class="ooda-label l-obs">Observe</div>
+    <div class="ooda-item">Devs using personal Gemini keys</div>
+    <div class="ooda-item">2-week approval causing bypasses</div>
+    <div class="ooda-item">No audit trail on personal usage</div>
+    <div class="ooda-item">Zaid sharing personal login</div>
+    <div class="ooda-item">Arun used personal key under deadline</div>
+  </div>
+  <div class="ooda-lane">
+    <div class="ooda-label l-ori">Orient</div>
+    <div class="ooda-item">Friction = bypass. Always.</div>
+    <div class="ooda-item">Policy without delivery fails</div>
+    <div class="ooda-item">MDM already deployed — extend it</div>
+    <div class="ooda-item">Shay-Rolls already scanning code</div>
+    <div class="ooda-item">Google Workspace = identity anchor</div>
+  </div>
+  <div class="ooda-lane">
+    <div class="ooda-label l-dec">Decide</div>
+    <div class="ooda-item">Inject enterprise creds via MDM</div>
+    <div class="ooda-item">No ticket process for devs</div>
+    <div class="ooda-item">Scan personal key patterns in pre-commit</div>
+    <div class="ooda-item">Log all API calls via GCP Audit</div>
+    <div class="ooda-item">Scope keys to Workspace identity</div>
+  </div>
+  <div class="ooda-lane">
+    <div class="ooda-label l-act">Act</div>
+    <div class="ooda-item">IT: configure MDM push — Week 1</div>
+    <div class="ooda-item">Eng: update secret-scan.py — Week 1</div>
+    <div class="ooda-item">IT: enable GCP Audit Logs — Week 1</div>
+    <div class="ooda-item">IT: quarterly rotation automation</div>
+    <div class="ooda-item">Lead: notify 70 devs, retire old process</div>
+  </div>
+</div>
+
+<!-- ══ DIAGRAM 2: FLOWCHART ══ -->
+<h2>2 — Enforcement Flowchart</h2>
+<div class="flow">
+  <div class="fbox fbox-start">Dev opens IDE / writes code</div>
+  <div class="farrow">↓</div>
+  <div class="fbox fbox-action">MDM: enterprise Gemini credential present?</div>
+  <div style="display:flex;gap:60px;margin:4px 0;align-items:flex-start">
+    <div style="display:flex;flex-direction:column;align-items:center">
+      <div class="fbranch-label" style="color:#b71c1c">NO</div>
+      <div class="fline"></div>
+      <div class="fbox fbox-block" style="min-width:160px">IT alerted<br/>24hr cache check</div>
+      <div class="fline"></div>
+      <div class="fbox fbox-block" style="min-width:160px">Cache expired?<br/>Dev blocked — IT fix</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center">
+      <div class="fbranch-label" style="color:#1b5e20">YES</div>
+      <div class="fline"></div>
+      <div class="fbox fbox-pass" style="min-width:160px">Enterprise key active<br/>Dev codes freely</div>
+      <div class="fline"></div>
+      <div class="fbox fbox-action" style="min-width:160px">git commit triggered</div>
+      <div class="fline"></div>
+      <div class="fbox fbox-action" style="min-width:200px">Shay-Rolls secret-scan.py<br/>Personal key pattern found?</div>
+      <div style="display:flex;gap:40px;margin:4px 0;align-items:flex-start">
+        <div style="display:flex;flex-direction:column;align-items:center">
+          <div class="fbranch-label" style="color:#b71c1c">YES</div>
+          <div class="fline"></div>
+          <div class="fbox fbox-block" style="min-width:140px">❌ HARD BLOCK<br/>Remove personal key</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center">
+          <div class="fbranch-label" style="color:#1b5e20">NO</div>
+          <div class="fline"></div>
+          <div class="fbox fbox-pass" style="min-width:140px">✅ Commit allowed<br/>GCP Audit logs call</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ DIAGRAM 3: TECH ARCHITECTURE ══ -->
+<h2>3 — Tech Architecture</h2>
+<div class="arch">
+
+  <!-- Dev Machine -->
+  <div class="arch-col">
+    <div class="arch-hdr">Developer Machine</div>
+    <div class="svc svc-mdm">
+      <div class="svc-icon">💻</div>
+      <div class="svc-name">VS Code / Cursor</div>
+      <div class="svc-desc">IDE + Claude Code</div>
+    </div>
+    <div class="svc svc-mdm">
+      <div class="svc-icon">🔑</div>
+      <div class="svc-name">Enterprise Credential</div>
+      <div class="svc-desc">Injected by MDM · 24hr cache</div>
+      <div style="margin-top:6px"><span class="badge badge-inject">MDM pushed</span></div>
+    </div>
+    <div class="svc svc-sr">
+      <div class="svc-icon">🛡️</div>
+      <div class="svc-name">Shay-Rolls</div>
+      <div class="svc-desc">secret-scan.py · pre-commit</div>
+      <div style="margin-top:6px"><span class="badge badge-block">blocks personal keys</span></div>
+    </div>
+  </div>
+
+  <!-- Arrow 1 -->
+  <div class="arr-col">
+    <svg width="40" height="60" viewBox="0 0 40 60">
+      <defs><marker id="a1" markerWidth="7" markerHeight="7" refX="3" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#90caf9"/></marker></defs>
+      <line x1="20" y1="4" x2="20" y2="52" stroke="#90caf9" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#a1)"/>
+    </svg>
+    <div class="arr-label">credential push</div>
+  </div>
+
+  <!-- MDM -->
+  <div class="arch-col">
+    <div class="arch-hdr">MDM / IT</div>
+    <div class="svc svc-mdm">
+      <div class="svc-icon">📱</div>
+      <div class="svc-name">Jamf / Intune</div>
+      <div class="svc-desc">Device management</div>
+    </div>
+    <div class="svc svc-gcp">
+      <div class="svc-icon">🔐</div>
+      <div class="svc-name">Google Workspace</div>
+      <div class="svc-desc">Identity anchor · auto-revoke</div>
+    </div>
+    <div class="svc svc-gcp">
+      <div class="svc-icon">🔄</div>
+      <div class="svc-name">Key Rotation</div>
+      <div class="svc-desc">Quarterly · automated</div>
+    </div>
+  </div>
+
+  <!-- Arrow 2 -->
+  <div class="arr-col">
+    <svg width="40" height="60" viewBox="0 0 40 60">
+      <defs><marker id="a2" markerWidth="7" markerHeight="7" refX="3" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#90caf9"/></marker></defs>
+      <line x1="20" y1="4" x2="20" y2="52" stroke="#90caf9" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#a2)"/>
+    </svg>
+    <div class="arr-label">API calls</div>
+  </div>
+
+  <!-- Gemini -->
+  <div class="arch-col">
+    <div class="arch-hdr">Google Cloud</div>
+    <div class="svc svc-gcp">
+      <div class="svc-icon">✨</div>
+      <div class="svc-name">Gemini Enterprise</div>
+      <div class="svc-desc">Enterprise endpoint only</div>
+    </div>
+    <div class="svc svc-gcp">
+      <div class="svc-icon">📋</div>
+      <div class="svc-name">GCP Audit Logs</div>
+      <div class="svc-desc">Every call logged</div>
+      <div style="margin-top:6px"><span class="badge badge-log">who · when · tokens</span></div>
+    </div>
+  </div>
+
+  <!-- Arrow 3 -->
+  <div class="arr-col">
+    <svg width="40" height="60" viewBox="0 0 40 60">
+      <defs><marker id="a3" markerWidth="7" markerHeight="7" refX="3" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#90caf9"/></marker></defs>
+      <line x1="20" y1="4" x2="20" y2="52" stroke="#90caf9" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#a3)"/>
+    </svg>
+    <div class="arr-label">alerts + metrics</div>
+  </div>
+
+  <!-- Monitoring -->
+  <div class="arch-col">
+    <div class="arch-hdr">Monitoring</div>
+    <div class="svc svc-aws">
+      <div class="svc-icon">📊</div>
+      <div class="svc-name">CloudWatch</div>
+      <div class="svc-desc">Token usage · alerts</div>
+    </div>
+    <div class="svc svc-sr">
+      <div class="svc-icon">📬</div>
+      <div class="svc-name">Prism7</div>
+      <div class="svc-desc">Violation alerts · digest</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Legend -->
+<div style="display:flex;gap:16px;margin-top:24px;padding-top:16px;border-top:2px solid #e8eef4;flex-wrap:wrap;">
+  <span style="font-size:8px;color:#8aa0b8;letter-spacing:2px;text-transform:uppercase;font-weight:700;">Legend:</span>
+  <span class="badge badge-inject">MDM pushed — invisible to dev</span>
+  <span class="badge badge-block">Shay-Rolls blocks personal keys</span>
+  <span class="badge badge-log">GCP logs every call</span>
+  <span style="font-size:8px;color:#8aa0b8;">Personal Gemini endpoint: ❌ blocked at pre-commit</span>
+</div>
+
+</body>
+</html>

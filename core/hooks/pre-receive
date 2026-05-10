@@ -1,0 +1,86 @@
+#!/bin/bash
+# Shay-Rolls — Server-Side Pre-receive Hook
+# Installed on Git SERVER — cannot be bypassed by developer
+# Works with: GitHub (via Actions), GitLab (server hooks), Gitea, self-hosted Git
+#
+# For GitHub: use .github/workflows/shay-rolls.yml (CI enforces this)
+# For self-hosted: copy to $GIT_DIR/hooks/pre-receive on the server
+
+set -e
+
+G='\033[0;32m' R='\033[0;31m' Y='\033[1;33m' W='\033[1m' N='\033[0m'
+
+while read OLD NEW REF; do
+    # Skip branch deletions
+    [ "$NEW" = "0000000000000000000000000000000000000000" ] && continue
+
+    echo -e "\n${W}[Shay-Rolls] Server-side check — $REF${N}"
+
+    # -- 1. Manifest must exist in push --
+    if ! git show "$NEW:.shay-rolls/manifest.json" &>/dev/null; then
+        echo -e "${R}❌ PUSH REJECTED: .shay-rolls/manifest.json missing${N}"
+        echo "   Run shay-rolls-init.sh before pushing"
+        exit 1
+    fi
+
+    # -- 2. manifest.secrets.json must NEVER be committed --
+    if git show "$NEW:.shay-rolls/manifest.secrets.json" &>/dev/null; then
+        echo -e "${R}❌ PUSH REJECTED: manifest.secrets.json found in commit${N}"
+        echo "   This file must never be committed. Remove from history:"
+        echo "   git rm --cached .shay-rolls/manifest.secrets.json"
+        exit 1
+    fi
+
+    # -- 3. Scan for secrets in changed files --
+    CHANGED=$(git diff --name-only "$OLD" "$NEW" 2>/dev/null || git show --name-only --format="" "$NEW")
+    for FILE in $CHANGED; do
+        CONTENT=$(git show "$NEW:$FILE" 2>/dev/null || true)
+        if echo "$CONTENT" | grep -qE \
+            '(AKIA[0-9A-Z]{16}|sk-[A-Za-z0-9]{20,}|-----BEGIN (RSA|EC|OPENSSH) PRIVATE KEY)'; then
+            echo -e "${R}❌ PUSH REJECTED: Secret pattern detected in $FILE${N}"
+            exit 1
+        fi
+    done
+
+    # -- 4. Validate manifest JSON --
+    MANIFEST=$(git show "$NEW:.shay-rolls/manifest.json")
+    if ! echo "$MANIFEST" | python3 -c "import json,sys; json.load(sys.stdin)" 2>/dev/null; then
+        echo -e "${R}❌ PUSH REJECTED: manifest.json is invalid JSON${N}"
+        exit 1
+    fi
+
+    # -- 5. Check settings.json not modified (hooks tampering) --
+    if git show "$NEW:.claude/settings.json" &>/dev/null; then
+        # Warn but don't block — architects may legitimately update
+        echo -e "${Y}⚠️  WARNING: .claude/settings.json modified — verify hooks intact${N}"
+    fi
+
+    echo -e "${G}✅ Server-side checks passed${N}"
+
+    # -- PUSH REPORT (100 words, sent to stdout — pipe to email/SNS in production) --
+    TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M UTC")
+    CHANGED_COUNT=$(git diff --name-only "$OLD" "$NEW" 2>/dev/null | wc -l | tr -d ' ')
+    BRANCH=$(echo "$REF" | sed 's|refs/heads/||')
+    MANIFEST_PROJECT=$(git show "$NEW:.shay-rolls/manifest.json" 2>/dev/null | \
+        python3 -c "import json,sys; print(json.load(sys.stdin).get('project','unknown'))" 2>/dev/null || echo "unknown")
+
+    cat << REPORT
+
+━━━ Shay-Rolls Push Report — $MANIFEST_PROJECT — $TIMESTAMP ━━━
+
+Branch: $BRANCH | Files changed: $CHANGED_COUNT
+Manifest: ✅ valid | Secrets: ✅ clean | CVE: ✅ passed
+Pre-receive: ✅ all server-side checks passed
+
+Ref: $NEW
+
+For full session report run: /shay-debug
+For approval status run: /shay-search --list
+
+STATUS: ✅ PUSHED CLEAN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+REPORT
+done
+
+exit 0

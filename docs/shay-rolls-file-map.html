@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#f8fbff;font-family:'JetBrains Mono',monospace;padding:28px;color:#1a2a3a;}
+h1{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:#0a1a2a;margin-bottom:4px;}
+.sub{font-size:9px;letter-spacing:2px;color:#8aa0b8;text-transform:uppercase;margin-bottom:28px;}
+.repo-block{margin-bottom:32px;}
+.repo-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:8px 14px;border-radius:6px 6px 0 0;display:inline-block;margin-bottom:0;}
+.core-title{background:#1E2761;color:#CADCFC;}
+.guard-title{background:#E65C00;color:#fff;}
+.project-title{background:#00C4B4;color:#0a1a2a;}
+.folder-section{background:#fff;border:1.5px solid #e8eef4;border-radius:0 8px 8px 8px;padding:16px;margin-bottom:12px;}
+.folder-label{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8aa0b8;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #f0f4ff;}
+.file-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;}
+.file-card{border:1.5px solid #e8eef4;border-radius:6px;padding:10px;background:#f8fbff;position:relative;}
+.file-name{font-size:9.5px;font-weight:700;color:#0a1a2a;font-family:'JetBrains Mono',monospace;margin-bottom:4px;}
+.file-desc{font-size:8px;color:#5a7a9a;line-height:1.5;margin-bottom:6px;}
+.meta{display:flex;gap:6px;flex-wrap:wrap;}
+.tag{font-size:7px;font-weight:700;padding:1px 6px;border-radius:3px;text-transform:uppercase;letter-spacing:0.5px;}
+.t-owner{background:#e8f4ff;color:#1565c0;border:1px solid #bbdefb;}
+.t-edit{background:#e8fff4;color:#1b5e20;border:1px solid #c8e6c9;}
+.t-when{background:#fff8e1;color:#f57f17;border:1px solid #ffe082;}
+.t-never{background:#fff0f0;color:#b71c1c;border:1px solid #ffcdd2;}
+.file-card.critical{border-color:#ffcdd2;background:#fff8f8;}
+.file-card.key{border-color:#c8e6c9;background:#f1f8e9;}
+.section-gap{height:6px;}
+
+/* Folder color coding */
+.f-root{border-left:3px solid #1E2761;}
+.f-manifest{border-left:3px solid #9C27B0;}
+.f-agents{border-left:3px solid #E53E3E;}
+.f-skills{border-left:3px solid #00C4B4;}
+.f-hooks{border-left:3px solid #D69E2E;}
+.f-scripts{border-left:3px solid #38A169;}
+.f-commands{border-left:3px solid #1565C0;}
+.f-ci{border-left:3px solid #FF8C00;}
+.f-templates{border-left:3px solid #6A1B9A;}
+.f-docs{border-left:3px solid #546E7A;}
+.f-project{border-left:3px solid #00C4B4;}
+
+/* Legend */
+.legend{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap;align-items:center;}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:8px;color:#5a7a9a;}
+.legend-dot{width:10px;height:10px;border-radius:2px;}
+</style>
+</head>
+<body>
+
+<h1>Shay-Rolls Claude — File Map</h1>
+<div class="sub">Core v2.7 + Guard v1.2 · 70 files · github.com/giggso/shay-rolls-claude</div>
+
+<div class="legend">
+  <span style="font-size:8px;font-weight:700;color:#8aa0b8;letter-spacing:1px;text-transform:uppercase;">Folder:</span>
+  <div class="legend-item"><div class="legend-dot" style="background:#1E2761;"></div>Root</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#9C27B0;"></div>manifest/</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#E53E3E;"></div>agents/</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#00C4B4;"></div>skills/</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#D69E2E;"></div>hooks/</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#38A169;"></div>scripts/</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#1565C0;"></div>commands/</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#FF8C00;"></div>ci/</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#6A1B9A;"></div>templates/</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#546E7A;"></div>docs/</div>
+</div>
+
+<script>
+const data = [
+  // CORE ROOT
+  {r:"Core",f:"Root",fn:"CLAUDE.md",d:"Project entry point. Boot sequence, non-negotiables, skill security rules. Claude reads first on every session.",o:"Architects",e:"Text editor",w:"On standard change",cls:"key f-root"},
+  {r:"Core",f:"Root",fn:"shay-rolls-init.sh",d:"Master setup script. 7 questions, creates manifest, copies all files, sets OS permissions, verifies.",o:"Architects",e:"Bash editor",w:"New feature in init",cls:"key f-root"},
+  {r:"Core",f:"Root",fn:"README.md",d:"Public documentation. What the repo is, install steps, what it does.",o:"Open source",e:"Text editor",w:"Version bump",cls:"f-root"},
+  {r:"Core",f:"Root",fn:"HOW-TO-USE.md",d:"Full enterprise setup guide. Stakeholder roles, CVE tiers, CI/CD, troubleshooting.",o:"Architects",e:"Text editor",w:"Feature addition",cls:"f-root"},
+  {r:"Core",f:"Root",fn:"LICENSE",d:"MIT license. Do not edit.",o:"Legal",e:"Never",w:"Never",cls:"f-root"},
+
+  // CORE MANIFEST
+  {r:"Core",f:"manifest/",fn:"manifest.schema.json",d:"JSON schema validating all manifest fields.",o:"Architects",e:"JSON editor",w:"New manifest fields",cls:"f-manifest"},
+  {r:"Core",f:"manifest/",fn:"manifest.example.json",d:"Working example with all fields. Use as template.",o:"Architects",e:"JSON editor",w:"New fields added",cls:"f-manifest"},
+  {r:"Core",f:"manifest/",fn:"manifest.org.example.json",d:"Org-level locked fields for Claude Code Enterprise.",o:"CISO/CTO",e:"JSON editor",w:"Org standard change",cls:"f-manifest"},
+  {r:"Core",f:"manifest/",fn:"manifest.secrets.example.json",d:"Secrets template. Reference only — real file lives in .shay-rolls/",o:"Architects",e:"Reference only",w:"New secret fields",cls:"critical f-manifest"},
+
+  // CORE AGENTS
+  {r:"Core",f:"core/agents/",fn:"manifest-checker.md",d:"Priority 1. Hard blocks if manifest missing. Only agent that blocks during coding.",o:"Architects",e:"Markdown",w:"Manifest rules change",cls:"critical f-agents"},
+  {r:"Core",f:"core/agents/",fn:"stack-validator.md",d:"Priority 2. Fires on imports. Three-tier CVE check. Approval flow for unknown libs.",o:"Architects",e:"Markdown",w:"CVE logic changes",cls:"f-agents"},
+  {r:"Core",f:"core/agents/",fn:"style-enforcer.md",d:"Priority 3. Advises during coding. Hard blocks at commit. Lines, print(), type hints.",o:"Architects",e:"Markdown",w:"Style rules change",cls:"f-agents"},
+  {r:"Core",f:"core/agents/",fn:"architecture-guard.md",d:"Priority 4. 24hr grace on new files then hard blocks until architecture.md filled.",o:"Architects",e:"Markdown",w:"Architecture reqs change",cls:"f-agents"},
+  {r:"Core",f:"core/agents/",fn:"claude-mem.md",d:"Session memory. Start+end. Indexes decisions. 95% token reduction. Haiku model.",o:"Architects",e:"Markdown",w:"Memory strategy changes",cls:"f-agents"},
+  {r:"Core",f:"core/agents/",fn:"skill-guard.md",d:"Security. Monitors skill activity. Blocks restricted file access. Checks approved_skills.",o:"CISO",e:"Markdown",w:"Security policy changes",cls:"critical f-agents"},
+
+  // CORE SKILLS
+  {r:"Core",f:"core/skills/shay-rolls-core/",fn:"SKILL.md",d:"Entry skill. Loads manifest live via ! injection. Routes to rule files on demand. ~100 tokens.",o:"Architects",e:"Markdown",w:"Routing logic changes",cls:"key f-skills"},
+  {r:"Core",f:"core/skills/shay-rolls-core/rules/",fn:"stack.md",d:"Stack rules. Loads only on import detect. Checks manifest. Calls cve-check.py.",o:"Architects",e:"Markdown",w:"Stack policy changes",cls:"f-skills"},
+  {r:"Core",f:"core/skills/shay-rolls-core/rules/",fn:"style.md",d:"Style rules. Loads only on style check. Max lines, type hints, logging.",o:"Architects",e:"Markdown",w:"Style standards change",cls:"f-skills"},
+  {r:"Core",f:"core/skills/shay-rolls-core/rules/",fn:"architecture.md",d:"Architecture rules. Loads on file create. Checks architecture.md version.",o:"Architects",e:"Markdown",w:"Architecture reqs change",cls:"f-skills"},
+  {r:"Core",f:"core/skills/shay-rolls-core/rules/",fn:"commit.md",d:"Commit gate rules. Loads at commit. Lists all 5 checks in order.",o:"Architects",e:"Markdown",w:"Commit gates change",cls:"f-skills"},
+  {r:"Core",f:"core/skills/shay-expert/",fn:"SKILL.md",d:"L99 mode. No hedging. World-class specialist depth.",o:"All devs",e:"Markdown",w:"Rarely",cls:"f-skills"},
+  {r:"Core",f:"core/skills/shay-plan/",fn:"SKILL.md",d:"Architecture-first planning. Reads manifest live. Dependency map before code.",o:"All devs",e:"Markdown",w:"Rarely",cls:"f-skills"},
+  {r:"Core",f:"core/skills/shay-review/",fn:"SKILL.md",d:"Manifest-aware code review. Stack + style + security.",o:"All devs",e:"Markdown",w:"Rarely",cls:"f-skills"},
+  {r:"Core",f:"core/skills/shay-security/",fn:"SKILL.md",d:"CVE-aware security review. Calls cve-check.py + secret-scan.py.",o:"All devs",e:"Markdown",w:"Rarely",cls:"f-skills"},
+  {r:"Core",f:"core/skills/shay-refactor/",fn:"SKILL.md",d:"Enforces 150 lines, type hints, logging, polars over pandas.",o:"All devs",e:"Markdown",w:"Rarely",cls:"f-skills"},
+  {r:"Core",f:"core/skills/shay-test/",fn:"SKILL.md",d:"Test-first. Writes failing tests before implementation.",o:"All devs",e:"Markdown",w:"Rarely",cls:"f-skills"},
+  {r:"Core",f:"core/skills/shay-document/",fn:"SKILL.md",d:"Docstrings + architecture.md + changelog.",o:"All devs",e:"Markdown",w:"Rarely",cls:"f-skills"},
+  {r:"Core",f:"core/skills/andie/",fn:"SKILL.md",d:"Work orchestrator + Drama Mode. Expert panels. OODA diagrams. Strategy docs.",o:"All users",e:"Markdown",w:"Drama Mode changes",cls:"key f-skills"},
+
+  // CORE HOOKS
+  {r:"Core",f:"core/hooks/",fn:"settings.json",d:"Wires PreToolUse → tool-guard.py and PostToolUse → audit-log.py. chmod 444 after install.",o:"Architects",e:"Carefully — JSON",w:"Hook triggers change",cls:"critical f-hooks"},
+  {r:"Core",f:"core/hooks/",fn:"pre-commit",d:"Local git hook. 5 checks: manifest, secrets, CVE, style, deletions. Bypassable with --no-verify.",o:"Architects",e:"Bash",w:"Commit checks change",cls:"f-hooks"},
+  {r:"Core",f:"core/hooks/",fn:"pre-receive",d:"Server-side. Cannot bypass. Every git push. 100-word health report.",o:"DevOps",e:"Bash",w:"Server checks change",cls:"key f-hooks"},
+
+  // CORE SCRIPTS
+  {r:"Core",f:"core/scripts/",fn:"cve-check.py",d:"Three-tier CVE. Tier 1/2: whitelist auto-approve. Tier 3: PyPI Safety + GPT-5.4-Cyber.",o:"Architects",e:"Python",w:"CVE tiers change",cls:"key f-scripts"},
+  {r:"Core",f:"core/scripts/",fn:"secret-scan.py",d:"Regex secret detection. AWS keys, OpenAI, passwords, SSH, Bearer tokens.",o:"Architects",e:"Python",w:"New secret patterns",cls:"critical f-scripts"},
+  {r:"Core",f:"core/scripts/",fn:"tool-guard.py",d:"PreToolUse hook. Checks URLs, MCPs, bash against manifest.allowed_tools.",o:"Architects",e:"Python",w:"Tool governance changes",cls:"f-scripts"},
+  {r:"Core",f:"core/scripts/",fn:"audit-log.py",d:"PostToolUse hook. Encrypts + compresses → S3. Silent if unconfigured.",o:"Architects",e:"Python",w:"Audit format changes",cls:"f-scripts"},
+  {r:"Core",f:"core/scripts/",fn:"emit-violation.py",d:"Sends violations to S3 audit. Called by pre-commit + Guard. Silent if unconfigured.",o:"Architects",e:"Python",w:"Violation format changes",cls:"f-scripts"},
+  {r:"Core",f:"core/scripts/",fn:"audit-keygen.py",d:"Run ONCE. Generates Fernet key for audit logs. Add to manifest.secrets.json.",o:"Architects",e:"Run once",w:"Never after init",cls:"f-scripts"},
+  {r:"Core",f:"core/scripts/",fn:"skill-search.py",d:"Search + audit + install skills. Security check before install. Approval required.",o:"Architects",e:"Python",w:"Search sources change",cls:"f-scripts"},
+  {r:"Core",f:"core/scripts/",fn:"setup-claudemem.sh",d:"Installs Claude Mem. Updates CLAUDE.md. Run once per dev machine.",o:"Developers",e:"Run once",w:"Claude Mem version change",cls:"f-scripts"},
+
+  // CORE COMMANDS
+  {r:"Core",f:"core/commands/",fn:"shay-scaffold.md",d:"Forces plan before code. Reads manifest + architecture.md.",o:"All devs",e:"Markdown",w:"Planning process changes",cls:"f-commands"},
+  {r:"Core",f:"core/commands/",fn:"shay-approve.md",d:"Architect approves library. Updates manifest + changelog.",o:"Architects",e:"Markdown",w:"Rarely",cls:"f-commands"},
+  {r:"Core",f:"core/commands/",fn:"shay-debug.md",d:"Full boot diagnostic. All 8 layers. CLEARED or errors + fixes.",o:"All users",e:"Markdown",w:"Rarely",cls:"f-commands"},
+  {r:"Core",f:"core/commands/",fn:"shay-incident.md",d:"Manual P1/P2/P3. Notifies Prism7. Creates audit entry.",o:"DevOps/CISO",e:"Markdown",w:"Rarely",cls:"f-commands"},
+  {r:"Core",f:"core/commands/",fn:"shay-search.md",d:"Search skills from Claude interface. Calls skill-search.py.",o:"Architects",e:"Markdown",w:"Rarely",cls:"f-commands"},
+
+  // CORE CI
+  {r:"Core",f:"core/ci/",fn:"github-actions.yml",d:"GitHub Actions. Every push + PR. Copy to .github/workflows/",o:"DevOps",e:"YAML",w:"CI checks change",cls:"f-ci"},
+  {r:"Core",f:"core/ci/",fn:"gitlab-ci.yml",d:"GitLab CI. Copy to repo root as .gitlab-ci.yml",o:"DevOps",e:"YAML",w:"CI checks change",cls:"f-ci"},
+  {r:"Core",f:"core/ci/",fn:"on-prem-pipeline.sh",d:"Jenkins/Gitea compatible runner.",o:"DevOps",e:"Bash",w:"On-prem CI changes",cls:"f-ci"},
+
+  // CORE TEMPLATES
+  {r:"Core",f:"templates/",fn:"architecture.md",d:"Living architecture template. Fill within 24hrs or commits blocked. Version on every change.",o:"Dev leads",e:"Markdown",w:"Every structural change",cls:"key f-templates"},
+
+  // CORE DOCS
+  {r:"Core",f:"docs/diagrams/",fn:"shay-rolls-core-architecture.html",d:"7-layer Core architecture diagram.",o:"All",e:"Regenerate only",w:"Major version",cls:"f-docs"},
+  {r:"Core",f:"docs/diagrams/",fn:"shay-rolls-enterprise-usage.html",d:"Enterprise usage + business value. CISO/CXO facing.",o:"All",e:"Regenerate only",w:"Major version",cls:"f-docs"},
+  {r:"Core",f:"docs/diagrams/",fn:"gemini-enforcement.html",d:"Drama Mode Scene 1 diagrams. OODA + flowchart + tech arch.",o:"Architects",e:"Reference",w:"Decision changes",cls:"f-docs"},
+
+  // GUARD ROOT
+  {r:"Guard",f:"Root",fn:"CLAUDE.md",d:"Guard entry. Hard block rules, SLA, escalation ladder.",o:"Architects",e:"Text",w:"Guard rules change",cls:"key f-root"},
+  {r:"Guard",f:"Root",fn:"shay-rolls-guard-init.sh",d:"Guard setup. Installs 6 agents + scripts. Requires Core first.",o:"DevOps",e:"Bash",w:"New Guard feature",cls:"f-root"},
+  {r:"Guard",f:"Root",fn:"README.md",d:"Guard public docs. Agents, approval flow, SLA table.",o:"Open source",e:"Text",w:"Version bump",cls:"f-root"},
+
+  // GUARD AGENTS
+  {r:"Guard",f:"guard/agents/",fn:"guard-git-watch.md",d:"Git operations. Force push → hard block. GUARD:ALLOW-DELETE → approval.",o:"DevOps",e:"Markdown",w:"Git policy changes",cls:"critical f-agents"},
+  {r:"Guard",f:"guard/agents/",fn:"guard-db-watch.md",d:"DB operations. TRUNCATE/DROP → hard block. Mass delete >100 → approval.",o:"DBAs",e:"Markdown",w:"DB threshold changes",cls:"critical f-agents"},
+  {r:"Guard",f:"guard/agents/",fn:"guard-infra-watch.md",d:"Terraform/S3/VM/K8s. State file → hard block. S3 delete → approval.",o:"DevOps",e:"Markdown",w:"Infra policy changes",cls:"f-agents"},
+  {r:"Guard",f:"guard/agents/",fn:"guard-observability-watch.md",d:"Logs/metrics. P1 >50x, P2 >10x, P3 anomaly. Classifies only.",o:"DevOps/CISO",e:"Markdown",w:"Thresholds change",cls:"f-agents"},
+  {r:"Guard",f:"guard/agents/",fn:"guard-firewall-watch.md",d:"Network rules. 0.0.0.0/0 → hard block. RDP/SSH → hard block.",o:"CISO/DevOps",e:"Markdown",w:"Firewall policy changes",cls:"critical f-agents"},
+  {r:"Guard",f:"guard/agents/",fn:"guard-incident-manager.md",d:"Coordinates all Guard. P1:15min, P2:1hr, P3:24hr. Calls guard-notify.py.",o:"DevOps/CISO",e:"Markdown",w:"SLA or escalation changes",cls:"key f-agents"},
+
+  // GUARD SCRIPTS
+  {r:"Guard",f:"guard/scripts/",fn:"guard-notify.py",d:"P1 → PagerDuty + Prism7. P2 → Prism7. P3 → digest. Silent if unconfigured.",o:"DevOps",e:"Python",w:"Notification targets change",cls:"f-scripts"},
+  {r:"Guard",f:"guard/scripts/",fn:"guard-weekly-digest.py",d:"Reads digest.log → formats → Prism7 → clears. Cron: 0 8 * * 1",o:"DevOps",e:"Python",w:"Digest format changes",cls:"f-scripts"},
+  {r:"Guard",f:"guard/scripts/",fn:"emit-violation.py",d:"Guard violations → S3 audit. Silent if unconfigured.",o:"DevOps",e:"Python",w:"Violation format changes",cls:"f-scripts"},
+  {r:"Guard",f:"guard/scripts/",fn:"audit-log.py",d:"PostToolUse for Guard sessions. Encrypted S3 write.",o:"DevOps",e:"Python",w:"Audit format changes",cls:"f-scripts"},
+
+  // PROJECT FILES
+  {r:"Project",f:".shay-rolls/",fn:"manifest.json",d:"THE stack declaration. Language, cloud, DB, libraries, guard, style. Commit this.",o:"Architects",e:"JSON editor",w:"Every stack/standard change",cls:"key f-project"},
+  {r:"Project",f:".shay-rolls/",fn:"manifest.secrets.json",d:"THE secrets file. Inbox, API keys, S3 config, encryption key. chmod 600. NEVER commit.",o:"Architects",e:"JSON editor",w:"Credentials change",cls:"critical f-project"},
+  {r:"Project",f:".shay-rolls/",fn:"architecture.md",d:"Living architecture doc. Fill within 24hrs. Version every change.",o:"Dev leads",e:"Markdown",w:"Structural change",cls:"key f-project"},
+  {r:"Project",f:".shay-rolls/",fn:".gitignore",d:"Gitignores secrets + cache. Do not modify.",o:"Do not edit",e:"Never",w:"Never",cls:"f-project"},
+  {r:"Project",f:".shay-rolls/audit/",fn:"fallback-YYYY-MM-DD.log",d:"Local fallback audit. Written only if local_fallback:true and S3 unavailable.",o:"CISO",e:"Read only",w:"Auto-generated",cls:"f-project"},
+  {r:"Project",f:".shay-rolls/guard/",fn:"digest.log",d:"Guard P2/P3 event buffer. Read by weekly digest script every Monday.",o:"DevOps",e:"Read only",w:"Auto-generated",cls:"f-project"},
+];
+
+// Group by repo then folder
+const repos = ["Core","Guard","Project"];
+const container = document.getElementById("content");
+
+repos.forEach(repo => {
+  const repoData = data.filter(d => d.r === repo);
+  if(!repoData.length) return;
+
+  const folders = [...new Set(repoData.map(d => d.f))];
+  const block = document.createElement("div");
+  block.className = "repo-block";
+
+  const title = document.createElement("div");
+  title.className = `repo-title ${repo.toLowerCase()}-title`;
+  title.textContent = repo === "Project" ? "Project Files (created in your project by init script)" :
+                      repo === "Core" ? "Shay-Rolls Claude Core — github.com/giggso/shay-rolls-claude" :
+                      "Shay-Rolls Guard — github.com/giggso/shay-rolls-claude-guard";
+  block.appendChild(title);
+
+  folders.forEach(folder => {
+    const folderData = repoData.filter(d => d.f === folder);
+    const section = document.createElement("div");
+    section.className = "folder-section";
+
+    const label = document.createElement("div");
+    label.className = "folder-label";
+    label.textContent = folder === "Root" ? "/ (root)" : folder;
+    section.appendChild(label);
+
+    const grid = document.createElement("div");
+    grid.className = "file-grid";
+
+    folderData.forEach(item => {
+      const card = document.createElement("div");
+      card.className = `file-card ${item.cls}`;
+      card.innerHTML = `
+        <div class="file-name">${item.fn}</div>
+        <div class="file-desc">${item.d}</div>
+        <div class="meta">
+          <span class="tag t-owner">${item.o}</span>
+          <span class="tag ${item.e === 'Never' || item.e === 'Read only' || item.e === 'Run once' ? 't-never' : 't-edit'}">${item.e}</span>
+          <span class="tag t-when">${item.w}</span>
+        </div>`;
+      grid.appendChild(card);
+    });
+
+    section.appendChild(grid);
+    block.appendChild(section);
+  });
+
+  container.appendChild(block);
+});
+</script>
+
+<div id="content"></div>
+
+<div style="margin-top:24px;padding-top:16px;border-top:1px solid #e8eef4;display:flex;gap:16px;flex-wrap:wrap;font-size:8px;color:#8aa0b8;">
+  <span><strong>Border color key:</strong></span>
+  <span style="color:#E53E3E;">■ Agents</span>
+  <span style="color:#00C4B4;">■ Skills</span>
+  <span style="color:#D69E2E;">■ Hooks</span>
+  <span style="color:#38A169;">■ Scripts</span>
+  <span style="color:#1565C0;">■ Commands</span>
+  <span style="color:#9C27B0;">■ Manifest</span>
+  <span style="color:#FF8C00;">■ CI</span>
+  <span style="color:#6A1B9A;">■ Templates</span>
+  <span style="color:#1E2761;">■ Root</span>
+  <span style="margin-left:12px;"><strong>Card bg:</strong></span>
+  <span style="color:#b71c1c;">■ Never commit / Critical</span>
+  <span style="color:#1b5e20;">■ Key file</span>
+</div>
+
+</body>
+</html>

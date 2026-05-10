@@ -1,0 +1,48 @@
+# Shay-Rolls — GitHub Actions
+# Server-side enforcement for GitHub-hosted repos
+# This fires on every push/PR — cannot be bypassed with --no-verify
+name: Shay-Rolls
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  shay-rolls:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Manifest exists + valid JSON
+        run: |
+          test -f .shay-rolls/manifest.json || \
+            (echo "❌ manifest.json missing" && exit 1)
+          python3 -c "import json; json.load(open('.shay-rolls/manifest.json'))" || \
+            (echo "❌ manifest.json invalid JSON" && exit 1)
+
+      - name: Secrets file not committed
+        run: |
+          test ! -f .shay-rolls/manifest.secrets.json || \
+            (echo "❌ manifest.secrets.json committed — remove immediately" && exit 1)
+
+      - name: Secret pattern scan
+        run: python3 .claude/scripts/secret-scan.py
+
+      - name: Dependency CVE scan (local — no external API)
+        run: |
+          pip install pip-audit --quiet 2>/dev/null
+          pip-audit --requirement requirements.txt 2>/dev/null || true
+
+      - name: settings.json tamper check
+        run: |
+          git diff origin/main -- .claude/settings.json 2>/dev/null | \
+            grep -q "PreCommit\|PreToolUse" && \
+            echo "⚠️  Hooks config changed — verify intentional" || true

@@ -1,0 +1,103 @@
+{
+  "$schema": "./manifest.schema.json",
+  "_layer": "project",
+
+  "_note": "Fields marked _locked in org manifest cannot be changed here. Only stack, project, cloud, db, and guard thresholds are project-overridable.",
+
+  "project": "PatronAI",
+  "version": "1.0",
+
+  "stack": {
+    "language": ["python3.12"],
+    "frontend": ["vuejs"],
+    "data": ["polars", "s3"],
+    "db": ["postgresql", "opensearch"],
+    "infra": ["terraform", "docker-compose"],
+    "cloud": "aws",
+    "libraries": []
+  },
+
+  "standards": "shay-rolls-v1",
+  "min_compatible_version": "1.0",
+
+  "approval_mode": "first_responder",
+  "approval_mode_version": "1.0",
+  "approval_mode_changeable": true,
+
+  "tokens": {
+    "model": "claude-code-enterprise",
+    "control": "per_developer",
+    "warnings": [25, 50, 75, 80, 90, 95],
+    "overflow_sla": {
+      "standard_hours": 4,
+      "urgent_hours": 1,
+      "critical_minutes": 15
+    }
+  },
+
+  "guard": {
+    "enabled": true,
+    "version": "1.0",
+    "git": {
+      "force_push": "hard_block",
+      "branch_deletion": "approval_flow",
+      "file_deletion": "approval_flow",
+      "deletion_flag": "GUARD:ALLOW-DELETE"
+    },
+    "db": {
+      "mass_deletion_threshold": 100,
+      "truncation": "hard_block",
+      "schema_drop": "hard_block",
+      "index_deletion": "approval_flow"
+    },
+    "infra": {
+      "s3_delete": "approval_flow",
+      "terraform_state": "hard_block",
+      "vm_terminate": "approval_flow",
+      "network_change": "approval_flow"
+    },
+    "firewall": {
+      "open_world": "hard_block",
+      "rule_change": "approval_flow",
+      "egress_change": "approval_flow"
+    },
+    "incidents": {
+      "p1_sla_minutes": 15,
+      "p2_sla_minutes": 60,
+      "p3_sla_hours": 24
+    }
+  },
+
+  "offline": {
+    "cache_ttl_hours": 24,
+    "allow_commits_offline": false
+  },
+
+  "style": {
+    "max_lines_per_file": 150,
+    "require_type_hints": true,
+    "require_docstrings": true,
+    "require_logging": true,
+    "forbid_print_statements": true,
+    "max_function_lines": 50,
+    "require_base_classes": true
+  },
+
+  "architecture": {
+    "require_diagram": true,
+    "require_versioning": true,
+    "diagram_file": ".shay-rolls/architecture.md",
+    "version_bump_on_change": true
+  },
+
+  "changelog": [
+    {
+      "version": "1.0",
+      "changed_by": "lead-architect@giggso.com",
+      "changed_at": "2026-05-08T10:00:00Z",
+      "changes": "Initial project manifest for PatronAI — python3.12 + polars + s3 + postgresql + opensearch on AWS",
+      "pr": "github.com/giggso/patronai/pull/1",
+      "approved_by": "ravi@giggso.com"
+    }
+  ]
+}

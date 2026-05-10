@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body { font-family: -apple-system, sans-serif; max-width: 600px; margin: 40px auto; color: #1a2a3a; }
+  .header { background: #b71c1c; color: white; padding: 24px; border-radius: 8px 8px 0 0; }
+  .header h1 { margin: 0; font-size: 18px; }
+  .body { border: 1px solid #ffcdd2; border-top: 0; padding: 24px; border-radius: 0 0 8px 8px; }
+  .field { margin-bottom: 16px; }
+  .label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #8aa0b8; }
+  .value { font-size: 14px; margin-top: 4px; font-family: monospace; background: #fff0f0; padding: 8px 12px; border-radius: 4px; }
+  .footer { margin-top: 24px; font-size: 11px; color: #8aa0b8; border-top: 1px solid #e8eef4; padding-top: 16px; }
+</style>
+</head>
+<body>
+<div class="header"><h1>❌ Rejected — {{REQUEST_TYPE}}</h1></div>
+<div class="body">
+  <div class="field"><div class="label">Rejected By</div><div class="value">{{APPROVER_EMAIL}}</div></div>
+  <div class="field"><div class="label">Rejected At</div><div class="value">{{TIMESTAMP}}</div></div>
+  <div class="field"><div class="label">Item</div><div class="value">{{DETAILS}}</div></div>
+  <div class="field"><div class="label">Reason</div><div class="value">{{REASON}}</div></div>
+  <p>Hard block is now active for this item. Remove it from your code before committing.</p>
+  <p>Questions? Reply to {{ESCALATION_EMAIL}}</p>
+</div>
+<div class="footer">Shay-Rolls Core · Audit ID: {{AUDIT_ID}}</div>
+</body>
+</html>
