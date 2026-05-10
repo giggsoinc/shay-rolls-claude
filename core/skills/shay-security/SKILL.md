@@ -9,7 +9,7 @@ allowed-tools: Read Bash Grep
 # Shay-Security
 
 ## Live approved stack
-!`cat .shay-rolls/manifest.json 2>/dev/null | python3 -c "import json,sys; d=json.load(sys.stdin); libs=[l['name'] for l in d['stack'].get('libraries',[])]; print('Approved:', libs)"`
+!`cat .shay-rolls/manifest.json 2>/dev/null | python3 -c "import json,sys; d=json.load(sys.stdin); s=d.get('stack',{}); libs=s.get('libraries',[]); libs=[l if isinstance(l,str) else l.get('name','?') for l in libs]; print('Approved:', libs)"`
 
 ## Security checks
 1. **Secrets** — API keys, tokens, passwords hardcoded anywhere?
