@@ -20,7 +20,7 @@ s = {
   },
   "cve_check": {
     "openai_api_key": os.environ.get("KEY_VAL",""),
-    "model": "gpt-4-turbo"
+    "model": "gpt-5.5"
   },
   "audit": {
     "provider":       "",
